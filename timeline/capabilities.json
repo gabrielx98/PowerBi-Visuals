@@ -1,0 +1,81 @@
+{
+    "dataRoles": [
+        {
+            "name": "projectName",
+            "kind": "Grouping",
+            "displayName": "Project Name"
+            
+        },
+        {
+            "name": "phaseName",
+            "kind": "Grouping",
+            "displayName": "Phase Name"
+        },
+        {
+            "name": "phaseStartDate",
+            "kind": "Grouping",
+            "displayName": "Phase Start Date"
+        },
+        {
+            "name": "phaseEndDate",
+            "kind": "Grouping",
+            "displayName": "Phase End Date"
+        },
+        {
+            "name": "milestoneProjectName",
+            "kind": "Grouping",
+            "displayName": "Milestone Project Name"
+        },
+        {
+            "name": "milestoneName",
+            "kind": "Grouping",
+            "displayName": "Milestone Name"
+        },
+        {
+            "name": "milestoneDate",
+            "kind": "Grouping",
+            "displayName": "Milestone Date"
+        },
+        {
+            "name": "minDate",
+            "kind": "Measure",
+            "displayName": "Min Date"
+        },
+        {
+            "name": "maxDate",
+            "kind": "Measure",
+            "displayName": "Max Date"
+        }
+    ],
+    "dataViewMappings": [
+        {
+            "table": {
+                "rows": {
+                    "select": [
+                        { "for": { "in": "projectName" } },
+                        { "for": { "in": "phaseName" } },
+                        { "for": { "in": "phaseStartDate" } },
+                        { "for": { "in": "phaseEndDate" } },
+                        { "for": { "in": "milestoneProjectName" } },
+                        { "for": { "in": "milestoneName" } },
+                        { "for": { "in": "milestoneDate" } },
+                        { "for": { "in": "minDate" } },
+                        { "for": { "in": "maxDate" } }
+                    ]
+                }
+            }
+        }
+    ],
+    "objects": {
+        "general": {
+            "displayName": "General",
+            "properties": {
+                "fill": {
+                    "displayName": "Fill",
+                    "type": { "fill": { "solid": { "color": true } } }
+                }
+            }
+        }
+    },
+    "privileges": []
+}

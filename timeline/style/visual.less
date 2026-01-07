@@ -1,0 +1,81 @@
+.project rect {
+    stroke: black;
+    stroke-width: 1px;
+}
+
+.project-name rect {
+    fill: gray;
+}
+
+.project-name text {
+    font-size: 12px;
+    fill: white;
+}
+
+.phase-name {
+    font-size: 12px;
+    fill: white;
+}
+
+.milestone {
+    stroke: black;
+    stroke-width: 1px;
+}
+
+.milestone-name {
+    font-size: 10px;
+    fill: black;
+}
+
+.axis-top .tick text {
+    fill: white;
+}
+
+.axis-top .tick rect {
+    fill: darkgray;
+}
+
+.axis-bottom .tick text {
+    fill: white;
+}
+
+.axis-bottom .tick rect {
+    fill: darkgray;
+}
+
+.zoom-buttons {
+    display: flex;
+    flex-direction: row;
+}
+
+.zoom-buttons button {
+    background-color: #208b05;
+    color: white;
+    border: none;
+    margin: 5px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.zoom-buttons button:hover {
+    background-color: #005a9e;
+}
+
+div {
+    margin-top: 10px; /* Add spacing above the scrollbar */
+}
+
+.tooltip {
+    position: absolute;
+    text-align: left;
+    width: auto;
+    height: auto;
+    padding: 5px;
+    font: 12px sans-serif;
+    background: lightsteelblue;
+    border: 0px;
+    border-radius: 8px;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}

@@ -1,0 +1,235 @@
+{
+    "dataRoles": [
+        {
+            "displayName": "Código da Sonda",
+            "name": "numSonda",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Nome da Sonda",
+            "name": "nomeSonda",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Nome do Projeto",
+            "name": "projeto",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Nome da Locação",
+            "name": "locacao",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Nome do Poço",
+            "name": "poco",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Data de Inicio",
+            "name": "dtInicio",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Data de Termino",
+            "name": "dtFim",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Duração",
+            "name": "duracao",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Tipo de Serviço",
+            "name": "TpServico",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Descrição do Serviço",
+            "name": "DescServico",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Capacidade da Sonda",
+            "name": "CapSonda",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Posicionamento da Sonda",
+            "name": "PosiSonda",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Capacidade Atual",
+            "name": "CapAtual",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Avaliação Generalista Utilizada",
+            "name": "AvGenUtil",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Avaliação Especialista Utilizada",
+            "name": "AvEspUtil",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Avaliação Generalista",
+            "name": "AvGeneralista",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Observação Generalista",
+            "name": "ObGeneralista",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Avaliação Especialista",
+            "name": "AvEspecialista",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Observação Especialista",
+            "name": "ObEspecialista",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Avaliador por",
+            "name": "Avaliador",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Proposta do poço",
+            "name": "Proposta",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Obstaculos",
+            "name": "Obstaculos",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Lições aprendidas",
+            "name": "Licoes",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Resultado esperado",
+            "name": "ResultadoEsperado",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Resultado obtido",
+            "name": "ResultadoObtido",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Ano",
+            "name": "Ano",
+            "kind": "Measure"
+        },
+        {
+            "displayName": "Projetista PROJ",
+            "name": "ProjetistaPROJ",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Projetista PEP",
+            "name": "ProjetistaPEP",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Valor em Estoque",
+            "name": "ValorEstoque",
+            "kind": "Grouping"
+        }
+    ],
+    "objects": {
+        "dataPoint": {
+            "properties": {
+                "defaultColor": {
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "showAllDataPoints": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "fill": {
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "fillRule": {
+                    "type": {
+                        "fill": {}
+                    }
+                },
+                 "fontSize": {
+                    "type": {
+                        "formatting": {
+                            "fontSize": true
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "supportsLandingPage": true,
+    "supportsEmptyDataView": true,
+    "supportsKeyboardFocus": true,
+    "supportsHighlight": true,
+    "dataViewMappings": [
+        {
+            "table": {
+                "rows": {
+                    "select": [
+                        { "for": { "in": "numSonda" }},
+                        { "for": { "in": "nomeSonda" }},
+                        { "for": { "in": "projeto" }},
+                        { "for": { "in": "locacao" }},
+                        { "for": { "in": "poco" }},
+                        { "for": { "in": "dtInicio" }},
+                        { "for": { "in": "dtFim" }},
+                        { "for": { "in": "duracao" }},
+                        { "for": { "in": "TpServico" }},
+                        { "for": { "in": "DescServico" }},
+                        { "for": { "in": "CapSonda" }},
+                        { "for": { "in": "PosiSonda" }},
+                        { "for": { "in": "CapAtual" }},
+                        { "for": { "in": "AvGenUtil" }},
+                        { "for": { "in": "AvEspUtil" }},
+                        { "for": { "in": "AvGeneralista" }},
+                        { "for": { "in": "ObGeneralista" }},
+                        { "for": { "in": "AvEspecialista" }},
+                        { "for": { "in": "ObEspecialista" }},
+                        { "for": { "in": "Avaliador" }},
+                        { "for": { "in": "Proposta" }},
+                        { "for": { "in": "Obstaculos" }},
+                        { "for": { "in": "Licoes" }},
+                        { "for": { "in": "ResultadoEsperado" }},
+                        { "for": { "in": "ResultadoObtido" }},
+                        { "for": { "in": "ProjetistaPROJ" }},
+                        { "for": { "in": "ProjetistaPEP" }},
+                        { "for": { "in": "ValorEstoque" }},
+                        { "for": { "in": "Ano" }}
+
+                    ]
+                }
+            }
+        }
+    ],
+    "privileges": []
+}

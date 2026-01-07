@@ -1,0 +1,103 @@
+{
+    "dataRoles": [
+        {
+            "displayName": "Atribuido a",
+            "name": "projetista",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Nota da Meta",
+            "name": "notaGeral",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Titulo",
+            "name": "titulo",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Setor",
+            "name": "setor",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Prioridade",
+            "name": "prioridade",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Progresso",
+            "name": "progresso",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Anotações",
+            "name": "anotações",
+            "kind": "Grouping"
+        }
+
+
+    ],
+    "objects": {
+        "dataPoint": {
+            "properties": {
+                "defaultColor": {
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "showAllDataPoints": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "fill": {
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "fillRule": {
+                    "type": {
+                        "fill": {}
+                    }
+                },
+                 "fontSize": {
+                    "type": {
+                        "formatting": {
+                            "fontSize": true
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "dataViewMappings": [
+        {
+            "table": {
+                "rows": {
+                    "select": [
+                        { "for": { "in": "projetista" }},
+                        { "for": { "in": "notaGeral" }},
+                        { "for": { "in": "titulo" }},
+                        { "for": { "in": "setor" }},
+                        { "for": { "in": "prioridade" }},
+                        { "for": { "in": "progresso" }},
+                        { "for": { "in": "foto" }},
+                        { "for": { "in": "anotações"}}
+                        
+
+                    ]
+                }
+            }
+        }
+    ],
+    "privileges": []
+}

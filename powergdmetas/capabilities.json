@@ -1,0 +1,87 @@
+{
+    "dataRoles": [
+        {
+            "displayName": "Nome da Meta",
+            "name": "meta",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Nota da Meta",
+            "name": "nota",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Anotações",
+            "name": "anotações",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Setor",
+            "name": "setor",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Projetistas",
+            "name": "projetistas",
+            "kind": "Grouping"
+        }
+
+    ],
+    "objects": {
+        "dataPoint": {
+            "properties": {
+                "defaultColor": {
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "showAllDataPoints": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "fill": {
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "fillRule": {
+                    "type": {
+                        "fill": {}
+                    }
+                },
+                 "fontSize": {
+                    "type": {
+                        "formatting": {
+                            "fontSize": true
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "dataViewMappings": [
+        {
+            "table": {
+                "rows": {
+                    "select": [
+                        { "for": { "in": "meta" }},
+                        { "for": { "in": "nota" }},
+                        { "for": { "in": "anotações" }},
+                        { "for": { "in": "setor" }},
+                        { "for": { "in": "projetistas" }}
+                    ]
+                }
+            }
+        }
+    ],
+    "privileges": []
+}

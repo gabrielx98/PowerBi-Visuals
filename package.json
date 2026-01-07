@@ -1,0 +1,20 @@
+{
+  "name": "visual-bi",
+  "version": "1.0.0",
+  "main": "index.js",
+  "supportUrl": "https://www.google.com",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "new": "pbiviz new",
+    "start": "pbiviz start"
+  },
+  "author": {
+    "name": "Your Name",
+    "email": "your.email@example.com"
+  },
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "powerbi-visuals-tools": "^5.6.0"
+  }
+}
