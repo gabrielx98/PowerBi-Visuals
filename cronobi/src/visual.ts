@@ -18,6 +18,8 @@ import Projeto from "./models/projeto";
 import Servico from "./models/servico";
 import { formatToReal, formatarTimestamp } from "./utilities/format";
 import columnMapping from "./utilities/columnMapping";
+import { syncFormattingSettingsFromMetadata, getColorValue } from "./utilities/formattingHelper";
+import { CardGroupEntity } from "powerbi-visuals-utils-formattingmodel/lib/FormattingSettingsComponents";
 
 export class Visual implements IVisual {
     private target: HTMLElement;
@@ -79,6 +81,14 @@ export class Visual implements IVisual {
             this.height = options.viewport.height;
             this.dataView = options.dataViews?.[0];
 
+            // Sincronizar cores imediatamente após atualizar dataView
+            syncFormattingSettingsFromMetadata(
+                this.dataView,
+                this.formattingSettings,
+                this.formattingSettings.colorCard,
+                ['reavaliacaoCompleta', 'naoReavaliado', 'reavaliacaoIniciada', 'motivacaoEsforco', 'reavaliacaoAplicada']
+            );
+
             // Landing Page quando não há dados
             const hasData = !!this.dataView?.table?.rows?.length;
             if (!hasData) {
@@ -94,26 +104,10 @@ export class Visual implements IVisual {
             // Rendering Events - fim ok
             this.events.renderingFinished(options);
         } catch (err) {
+            console.error("Erro ao renderizar:", err);
             // Rendering Events - falha
             this.events.renderingFailed(options);
         }
-    }
-
-    // Novo Formatting Model para o Format Pane (API ≥ 5.1)
-    public getFormattingModel(): powerbi.visuals.FormattingModel {
-        return this.formattingSettingsService.buildFormattingModel(this.formattingSettings);
-    }
-
-    // Helper: cores de tema + alto contraste
-    private themedColor(defaultHex: string, kind: "fill" | "stroke" | "text" = "fill") {
-        const cp: any = this.host.colorPalette;
-        if (this.isHighContrast) {
-            if (kind === "text" || kind === "stroke") return cp.foreground.value;
-            return cp.background.value;
-        }
-        // Em cenário normal, use o colorPalette (mantendo consistência com o tema)
-        const themed = this.host.colorPalette.getColor(defaultHex)?.value;
-        return themed ?? defaultHex;
     }
 
     private renderLandingPage() {
@@ -130,6 +124,19 @@ export class Visual implements IVisual {
                 <h3>Sem dados</h3>
                 <p>Conecte os campos necessários ou veja as instruções no painel de formato.</p>
             `);
+    }
+
+    public getFormattingModel(): powerbi.visuals.FormattingModel {
+        syncFormattingSettingsFromMetadata(
+            this.dataView,
+            this.formattingSettings,
+            this.formattingSettings.colorCard,
+            ['reavaliacaoCompleta', 'naoReavaliado', 'reavaliacaoIniciada', 'motivacaoEsforco', 'reavaliacaoAplicada']
+        );
+        
+        return this.formattingSettingsService.buildFormattingModel(
+            this.formattingSettings
+        );
     }
 
     private attachContextMenu(selection: d3.Selection<any, any, any, any>) {
@@ -149,7 +156,7 @@ export class Visual implements IVisual {
         d3.select(this.target).selectAll("*").remove();
 
         // Dimensões
-        const margin = { top: 50, right: 30, bottom: 0, left: 200 };
+        const margin = { top: 50, right: 30, bottom: 0, left: 150 };
         const width = this.width - margin.left - margin.right;
         let height = (this.height - margin.top - margin.bottom) * (sondas.length / 5);
 
@@ -169,24 +176,10 @@ export class Visual implements IVisual {
             .style("width", "100%")
             .style("height", "50px");
 
-        containerLegenda.append("button")
-            .text("Informações Gerais")
-            .style("position", "absolute")
-            .style("top", "10px")
-            .style("right", "-450px")
-            .style("margin-right", "5px")
-            .style("padding", "5px")
-            .on("click", () => {
-                modalDetalhes.style("display", "block");
-                modalDetalhesContent.html(`
-                    <h3>Informações Gerais</h3>
-                    <h4>${sondas.length} Sondas</h4>
-                    <h4>${servicos.length} Intervenções</h4>
-                `);
-            });
+        const colorCard = this.formattingSettings.colorCard;
 
         containerLegenda.append("div")
-            .style("background-color", "#008000")
+            .style("background-color", getColorValue(colorCard.reavaliacaoCompleta.value))
             .style("width", "40px")
             .style("height", "25px")
             .style("position", "absolute")
@@ -202,7 +195,7 @@ export class Visual implements IVisual {
             .style("height", "25px");
 
         containerLegenda.append("div")
-            .style("background-color", "#d3d3d3")
+            .style("background-color", getColorValue(colorCard.naoReavaliado.value))
             .style("width", "40px")
             .style("height", "25px")
             .style("position", "absolute")
@@ -218,51 +211,51 @@ export class Visual implements IVisual {
             .style("height", "25px");
 
         containerLegenda.append("div")
-            .style("background-color", "#ff5d27ff")
+            .style("background-color", getColorValue(colorCard.reavaliacaoIniciada.value))
             .style("width", "40px")
             .style("height", "25px")
             .style("position", "absolute")
             .style("top", "10px")
-            .style("right", "810px");
+            .style("right", "690px");
 
         containerLegenda.append("div")
             .text("Reavaliação Iniciada")
             .style("position", "absolute")
             .style("top", "10px")
-            .style("right", "620px")
+            .style("right", "500px")
             .style("width", "180px")
             .style("height", "25px");
 
         containerLegenda.append("div")
-            .style("background-color", "#0e1fa3ff")
+            .style("background-color", getColorValue(colorCard.motivacaoEsforco.value))
             .style("width", "40px")
             .style("height", "25px")
             .style("position", "absolute")
             .style("top", "10px")
-            .style("right", "610px");
+            .style("right", "490px");
 
         containerLegenda.append("div")
             .text("Motivação X Esforço")
             .style("position", "absolute")
             .style("top", "10px")
-            .style("right", "420px")
+            .style("right", "300px")
             .style("width", "180px")
             .style("height", "25px");
 
         containerLegenda.append("div")
             .style("position", "absolute")
             .style("top", "10px")
-            .style("right", "410px")
+            .style("right", "300px")
             .style("width", "25px")
             .style("height", "25px")
-            .style("background-color", "#fb1403ff")
+            .style("background-color", getColorValue(colorCard.reavaliacaoAplicada.value))
             .style("border-radius", "50%");
 
         containerLegenda.append("div")
             .text("Reavaliação aplicada")
             .style("position", "absolute")
             .style("top", "10px")
-            .style("right", "220px")
+            .style("right", "110px")
             .style("width", "180px")
             .style("height", "25px");
 
@@ -273,7 +266,7 @@ export class Visual implements IVisual {
             .attr("height", (height + margin.top + margin.bottom) * this.zoom);
 
         // Context menu no SVG (espaço vazio)
-        this.attachContextMenu(svg);
+        //this.attachContextMenu(svg);
 
         const gRoot = svg.append("g")
             .attr("transform", `translate(${margin.left},${margin.top})`);
@@ -284,7 +277,7 @@ export class Visual implements IVisual {
 
         const yScale = d3.scaleBand()
             .domain(sondas.map(s => s.codigoSonda))
-            .range([0, height * this.zoom])
+            .range([0, height * this.zoom - 500])
             .padding(0.05);
 
         // Eixos
@@ -308,11 +301,11 @@ export class Visual implements IVisual {
             .attr("fill", "gray");
 
         gRoot.append("text")
-            .attr("x", -100)
-            .attr("y", -17)
+            .attr("x", -80)
+            .attr("y", -20)
             .attr("fill", "#FFFFFF")
             .style("text-anchor", "middle")
-            .style("font-size", "30px")
+            .style("font-size", "20px")
             .text("Cronograma");
 
         const zooomlevel = this.zoom;
@@ -351,7 +344,7 @@ export class Visual implements IVisual {
             .attr("fill", "#006398");
 
         sondaNames.append("text")
-            .attr("x", 10)
+            .attr("x", 80)
             .attr("y", yScale.bandwidth() / 3)
             .attr("dy", "0em")
             .attr("text-anchor", "middle")
@@ -359,22 +352,22 @@ export class Visual implements IVisual {
             .each(function (d) {
                 const textElement = d3.select(this);
                 textElement.append("tspan")
-                    .attr("x", 100)
+                    .attr("x",80)
                     .attr("dy", "0.2em")
                     .text(d)
-                    .style("font-size", `${yScale.bandwidth() / 5}px`);
-
+                    .style("font-size", `${yScale.bandwidth() / 5}px`)
+                    
                 textElement.append("tspan")
-                    .attr("x", 100)
-                    .attr("dy", "1.2em")
+                    .attr("x", 77)
+                    .attr("dy", "1.5em")
                     .text(sondas.filter(s => s.codigoSonda === d).map(s => s.nomeSonda)[0])
-                    .style("font-size", `${yScale.bandwidth() / 6}px`);
+                    .style("font-size", `${yScale.bandwidth() / 9}px`);
 
                 textElement.append("tspan")
-                    .attr("x", 100)
+                    .attr("x", 80)
                     .attr("dy", "1.2em")
                     .text(sondas.filter(s => s.codigoSonda === d).map(s => s.capacidade)[0])
-                    .style("font-size", `${yScale.bandwidth() / 5}px`);
+                    .style("font-size", `${yScale.bandwidth() / 6}px`);
             })
             .style("font-size", `${yScale.bandwidth() / 5}px`)
             .style("font-weight", "bold");
@@ -418,13 +411,18 @@ export class Visual implements IVisual {
             .on("click", () => {
                 modalDetalhes.style("display", "none");
                 modalSecundario.style("display", "none");
+                modalDetalhesContent.html("");
+                modalSecundarioContent.html("");
             });
 
         modalSecundario.append("button")
             .text("Fechar")
             .style("float", "right")
             .style("cursor", "pointer")
-            .on("click", () => modalSecundario.style("display", "none"));
+            .on("click", () => {
+                modalSecundario.style("display", "none");
+                modalSecundarioContent.html("");
+            });
 
         const modalDetalhesContent = modalDetalhes.append("div");
         const modalSecundarioContent = modalSecundario.append("div");
@@ -452,14 +450,20 @@ export class Visual implements IVisual {
 
                 // Gradiente por serviço
                 const defs = svg.append("defs");
+                const colorConfig = {
+                    reavaliacaoCompleta: getColorValue(colorCard.reavaliacaoCompleta.value),
+                    naoReavaliado: getColorValue(colorCard.naoReavaliado.value),
+                    reavaliacaoIniciada: getColorValue(colorCard.reavaliacaoIniciada.value),
+                    motivacaoEsforco: getColorValue(colorCard.motivacaoEsforco.value)
+                };
                 defs.append("linearGradient")
-                    .attr("id", `gradiente${d.dtInicio}${d.dtTermino}`)
+                    .attr("id", `gradiente${d.poco}-${d.dtInicio}-${d.dtTermino}`)
                     .attr("x1", "0%").attr("y1", "0%").attr("x2", "100%").attr("y2", "0%")
                     .selectAll("stop")
                     .data([
-                        { offset: "0%", color: Servico.atribuirCor(d, 1) },
-                        { offset: "100%", color: Servico.atribuirCor(d, 2) }
-                    ])
+                        { offset: "0%", color: Servico.atribuirCor(d, 1, colorConfig) },
+                        { offset: "100%", color: Servico.atribuirCor(d, 2, colorConfig) }
+                    ]) 
                     .enter()
                     .append("stop")
                     .attr("offset", d => d.offset)
@@ -472,7 +476,7 @@ export class Visual implements IVisual {
                     .attr("y", yPos + 12)
                     .attr("width", widthRect)
                     .attr("height", yScale.bandwidth() * 0.8)
-                    .attr("fill", `url(#gradiente${d.dtInicio}${d.dtTermino})`)
+                    .attr("fill", `url(#gradiente${d.poco}-${d.dtInicio}-${d.dtTermino})`)
                     .attr("stroke", "#000000")
                     .attr("stroke-width", 1);
 
@@ -481,7 +485,7 @@ export class Visual implements IVisual {
                     .text(`${d.poco} • ${formatarTimestamp(d.dtInicio)} → ${formatarTimestamp(d.dtTermino)}`);
 
                 // Context menu no datapoint
-                this.attachContextMenu(grupoServico);
+                //this.attachContextMenu(grupoServico);
 
                 // Círculo de reavaliação (canto superior direito)
                 if (d.reavaliacao.projetistaPROJ.avaliacaoUtilizada || d.reavaliacao.projetistaPEP.avaliacaoUtilizada) {
@@ -489,7 +493,7 @@ export class Visual implements IVisual {
                         .attr("cx", xInicio + widthRect - 13)
                         .attr("cy", yPos + 12 + 13)
                         .attr("r", 5)
-                        .attr("fill", Servico.atribuirCorCirculo(d))
+                        .attr("fill", Servico.atribuirCorCirculo(d, { ambas: getColorValue(colorCard.reavaliacaoAplicada.value) }))
                         .attr("stroke", "white")
                         .attr("stroke-width", 1.5);
                 }
@@ -499,9 +503,16 @@ export class Visual implements IVisual {
                     .attr("x", (xInicio + xFim) / 2)
                     .attr("y", yPos + yScale.bandwidth() / 2.5)
                     .attr("text-anchor", "middle")
-                    .style("font-size", `${yScale.bandwidth() / 8}px`)
-                    .style("fill", "#000000");
+                    .style("font-size", `${yScale.bandwidth() / 8}px`);
 
+                const cor = Servico.atribuirCor(d, 1, colorConfig);
+
+                if (cor === "#d3d3d3" ) {
+                    txt.style("fill", "black");
+                }else{
+                    txt.style("fill", "white");
+                }
+                
                 txt.append("tspan")
                     .attr("x", (xInicio + xFim) / 2)
                     .attr("dy", "0em")
@@ -542,13 +553,14 @@ export class Visual implements IVisual {
                         : ""
                     );
             })
-            .on("click", (event, d: any) => {
+            .on("click", (event, d: Servico) => {
                 // Respeitar Allow Interactions (dashboard tiles podem desabilitar)
                 if (!allowInteractions) return;
 
                 // Exibe modal (fluxo atual)
                 modalDetalhes.style("display", "block");
                 modalSecundario.style("display", "none");
+                modalSecundarioContent.html("");
                 modalDetalhesContent.html(`
                     <h2>Detalhes da Intervenção</h2>
                     <p><strong>Sonda:</strong> ${d.sonda.codigoSonda}</p>
@@ -567,19 +579,20 @@ export class Visual implements IVisual {
                     .style("cursor", "pointer")
                     .on("click", () => {
                         modalSecundario.style("display", "block");
+                        //modalSecundarioContent.html("");
                         modalSecundarioContent.html(`
                             <h3>Reavaliação do Projeto</h3>
                             <h4>O projeto foi reavaliado pelo PROJ com foco em otimização de estoque?</h4>
                             <label>
                               ${d.reavaliacao.projetistaPROJ.observacao
-                                ? `<strong>Projetista: ${d.reavaliacao.projetistaPROJ.nome.split(" -")[0]} <br> Observação: </strong> ${d.reavaliacao.projetistaPROJ.observacao}`
+                                ? `<strong>Projetista: ${d.reavaliacao.projetistaPROJ.nome.includes(" -") ? d.reavaliacao.projetistaPROJ.nome.split(" -")[0] : d.reavaliacao.projetistaPROJ.nome} <br> Observação: </strong> ${d.reavaliacao.projetistaPROJ.observacao}`
                                 : "Projeto não reavaliado pelo PROJ."}
                             </label>
                             <h4>${d.reavaliacao.projetistaPROJ.avaliacaoUtilizada ? "Observação do PROJ aplicada!" : ""}</h4>
                             <h4>O projeto foi reavaliado pelo PEP com foco em otimização de estoque?</h4>
                             <label>
                               ${d.reavaliacao.projetistaPEP.observacao
-                                ? `<strong>Projetista: ${d.reavaliacao.projetistaPEP.nome.split(" -")[0]} <br> Observação:</strong> ${d.reavaliacao.projetistaPEP.observacao}`
+                                ? `<strong>Projetista: ${d.reavaliacao.projetistaPEP.nome.includes(" -") ? d.reavaliacao.projetistaPEP.nome.split(" -")[0] : d.reavaliacao.projetistaPEP.nome} <br> Observação:</strong> ${d.reavaliacao.projetistaPEP.observacao}`
                                 : " Projeto não reavaliado pelo PEP."}
                             </label>
                             <h4>${d.reavaliacao.projetistaPEP.avaliacaoUtilizada ? "Observação do PEP aplicada!" : ""}</h4>
@@ -593,6 +606,7 @@ export class Visual implements IVisual {
                     .style("cursor", "pointer")
                     .on("click", () => {
                         modalSecundario.style("display", "block");
+                        modalSecundarioContent.html("");
                         modalSecundarioContent.html(`
                             <h3> Registro de Motivação X Esforço </h3>
                             <h4> Qual a proposta do que será realizado no poço? </h4>

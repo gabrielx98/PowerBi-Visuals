@@ -1,0 +1,138 @@
+{
+    "dataRoles": [
+        {
+            "displayName": "Sonda",
+            "name": "Sonda", 
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Poço",
+            "name": "Poço",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Locação",
+            "name": "Locação",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Projetista PROJ",
+            "name": "ProjetistaPROJ",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Projetista PEP",
+            "name": "ProjetistaPEP",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Tipo de Serviço",
+            "name": "Serviço",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Tipo de Tarefa",
+            "name": "Tarefa",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Tipo de Serviço Descrição",
+            "name": "ServiçoDescricao",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Observação PROJ",
+            "name": "ObservaçãoPROJ",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Observação PROJ Utilizada",
+            "name": "ObservaçãoPROJUtilizada",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Observação PEP",
+            "name": "ObservaçãoPEP",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Observação PEP Utilizada",
+            "name": "ObservaçãoPEPUtilizada",
+            "kind": "Grouping"
+        },
+        {
+            "displayName": "Valor do Estoque",
+            "name": "ValorEstoque",
+            "kind": "Grouping"
+        }
+    ],
+    "objects": {
+        "dataPoint": {
+            "properties": {
+                "defaultColor": {
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "showAllDataPoints": {
+                    "type": {
+                        "bool": true
+                    }
+                },
+                "fill": {
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "fillRule": {
+                    "type": {
+                        "fill": {}
+                    }
+                },
+                 "fontSize": {
+                    "type": {
+                        "formatting": {
+                            "fontSize": true
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "supportsLandingPage": true,
+    "supportsEmptyDataView": true,
+    "supportsKeyboardFocus": true,
+    "supportsHighlight": true,
+    "dataViewMappings": [
+        {
+            "table": {
+                "rows": {
+                    "select": [
+                        { "for": { "in": "Sonda" }},
+                        { "for": { "in": "Poço" }},
+                        { "for": { "in": "Locação" }},
+                        { "for": { "in": "ProjetistaPROJ" }},
+                        { "for": { "in": "ProjetistaPEP" }},
+                        { "for": { "in": "Serviço" }},
+                        { "for": { "in": "Tarefa" }},
+                        { "for": { "in": "ServiçoDescricao" }},
+                        { "for": { "in": "ObservaçãoPROJ" }},
+                        { "for": { "in": "ObservaçãoPROJUtilizada" }},
+                        { "for": { "in": "ObservaçãoPEP" }},
+                        { "for": { "in": "ObservaçãoPEPUtilizada" }},
+                        { "for": { "in": "ValorEstoque" }}
+                    ]
+                }
+            }
+        }
+    ],
+    "privileges": []
+}

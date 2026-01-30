@@ -70,76 +70,88 @@ export default class Servico {
             const fim = new Date(servico.dtTermino);
            return inicio.getFullYear() <= anoAtual && fim.getFullYear() >= anoAtual;
         })
+
         return servicos;
     }
 
-    static atribuirCor(servico: Servico,cor: number){
-        if(cor == 1){
-            if(
-                servico.reavaliacao.projetistaPROJ.projetoFoiAvaliado != null &&
-                servico.reavaliacao.projetistaPEP.projetoFoiAvaliado != null &&
-                servico.reavaliacao.projetistaPROJ.projetoFoiAvaliado == true &&
-                servico.reavaliacao.projetistaPEP.projetoFoiAvaliado == true &&
-                servico.motivacaoEsforco.proposta != null &&
-                servico.motivacaoEsforco.licoes != null &&
-                servico.motivacaoEsforco.obstaculos != null && 
-                servico.motivacaoEsforco.resultadoEsperado != null &&
-                servico.motivacaoEsforco.resultadoObtido != null
-            ){
-                return "#008000"
-            }
-            else if(servico.reavaliacao.projetistaPROJ.projetoFoiAvaliado != null &&
-                servico.reavaliacao.projetistaPROJ.projetoFoiAvaliado == true){
-                return "#e8917cff";
-            }else if(servico.reavaliacao.projetistaPEP.projetoFoiAvaliado != null&&
-                servico.reavaliacao.projetistaPEP.projetoFoiAvaliado == true){
-                return "#ff5d27ff";
-            }else{
-                return "#d3d3d3"
-            }
-        }else if(cor == 2){
-            if(
-                servico.reavaliacao.projetistaPROJ.projetoFoiAvaliado != null &&
-                servico.reavaliacao.projetistaPEP.projetoFoiAvaliado != null &&
-                servico.reavaliacao.projetistaPROJ.projetoFoiAvaliado == true &&
-                servico.reavaliacao.projetistaPEP.projetoFoiAvaliado == true &&
-                servico.motivacaoEsforco.proposta != null &&
-                servico.motivacaoEsforco.licoes != null &&
-                servico.motivacaoEsforco.obstaculos != null &&
-                servico.motivacaoEsforco.resultadoEsperado != null &&
-                servico.motivacaoEsforco.resultadoObtido != null
-            ){
-                return "#008000"
-            }
-            else if(servico.motivacaoEsforco.proposta != null){
-                return "#8694faff";
-            }else if(servico.motivacaoEsforco.licoes != null){
-                return "#5569fcff";
-            }else if(servico.motivacaoEsforco.obstaculos != null){
-                return "#3b52fdff";
-            } 
-            else if(servico.motivacaoEsforco.resultadoEsperado != null){
-                return "#3848c6ff";
-            } 
-            else if(servico.motivacaoEsforco.resultadoObtido != null){
-                return "#0e1fa3ff";
-            }else{
-                return "#d3d3d3"
-            }
-        }else{
-            return "#d3d3d3"
+    static atribuirCor(servico: Servico, cor: number, colors?: any) {
+        const defaultColors = {
+            reavaliacaoCompleta: "#008000",
+            naoReavaliado: "#d3d3d3",
+            reavaliacaoIniciada: "#ff5d27ff",
+            motivacaoEsforco: "#0e1fa3ff"
+        };
+
+        const colorScheme = colors || defaultColors;
+
+        // Verificar se reavaliação está completa (aplica para ambos cor === 1 e cor === 2)
+        if (this.isReavaliacaoCompleta(servico)) {
+            return colorScheme.reavaliacaoCompleta;
         }
+
+        // Lógica específica por tipo de cor
+        if (cor === 1) {
+            return this.isReavaliacaoIniciada(servico) 
+                ? colorScheme.reavaliacaoIniciada 
+                : colorScheme.naoReavaliado;
+        } else if (cor === 2) {
+            return this.temMotivaçaoEsforço(servico) 
+                ? colorScheme.motivacaoEsforco 
+                : colorScheme.naoReavaliado;
+        }
+
+        return colorScheme.naoReavaliado;
     }
 
-    static atribuirCorCirculo(servico: Servico){
+    private static isReavaliacaoCompleta(servico: Servico): boolean {
+        const { projetistaPROJ, projetistaPEP } = servico.reavaliacao;
+        const { proposta, licoes, obstaculos, resultadoEsperado, resultadoObtido } = servico.motivacaoEsforco;
+
+        return (
+            projetistaPROJ.projetoFoiAvaliado === true &&
+            projetistaPEP.projetoFoiAvaliado === true &&
+            proposta !== null &&
+            licoes !== null &&
+            obstaculos !== null &&
+            resultadoEsperado !== null &&
+            resultadoObtido !== null
+        );
+    }
+
+    private static isReavaliacaoIniciada(servico: Servico): boolean {
+        const { projetistaPROJ, projetistaPEP } = servico.reavaliacao;
+        return projetistaPROJ.projetoFoiAvaliado === true || projetistaPEP.projetoFoiAvaliado === true;
+    }
+
+    private static temMotivaçaoEsforço(servico: Servico): boolean {
+        const { proposta, obstaculos, licoes, resultadoEsperado, resultadoObtido } = servico.motivacaoEsforco;
+        return (
+            proposta !== null ||
+            obstaculos !== null ||
+            licoes !== null ||
+            resultadoEsperado !== null ||
+            resultadoObtido !== null
+        );
+    }
+
+    static atribuirCorCirculo(servico: Servico, colors?: any){
+        const defaultColors = {
+            ambas: "red",
+            proj: "yellow",
+            pep: "green",
+            nenhuma: "black"
+        };
+
+        const colorScheme = colors || defaultColors;
+
         if(servico.reavaliacao.projetistaPROJ.avaliacaoUtilizada && servico.reavaliacao.projetistaPEP.avaliacaoUtilizada){
-            return "red";
+            return colorScheme.ambas;
         }else if(servico.reavaliacao.projetistaPROJ.avaliacaoUtilizada){
-            return "yellow";
+            return colorScheme.proj;
         }else if(servico.reavaliacao.projetistaPEP.avaliacaoUtilizada){
-            return "green";
+            return colorScheme.pep;
         }else{
-            return "black";
+            return colorScheme.nenhuma;
         }
     }
     

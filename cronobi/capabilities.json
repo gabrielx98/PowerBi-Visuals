@@ -147,6 +147,61 @@
         }
     ],
     "objects": {
+        "Cores": {
+            "displayName": "Cores",
+            "properties": {
+                "reavaliacaoCompleta": {
+                    "displayName": "Reavaliação Completa",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "naoReavaliado": {
+                    "displayName": "Não Reavaliado",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "reavaliacaoIniciada": {
+                    "displayName": "Reavaliação Iniciada",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "motivacaoEsforco": {
+                    "displayName": "Motivação X Esforço",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                },
+                "reavaliacaoAplicada": {
+                    "displayName": "Reavaliação Aplicada",
+                    "type": {
+                        "fill": {
+                            "solid": {
+                                "color": true
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "dataPoint": {
             "properties": {
                 "defaultColor": {

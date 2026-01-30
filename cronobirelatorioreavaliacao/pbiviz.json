@@ -1,18 +1,19 @@
 {
     "visual": {
-        "name": "cronobi",
-        "displayName": "cronobi",
-        "guid": "cronobiBADAFEA4BF664093B9603F13D7A12121",
+        "name": "cronobirelatorioreavaliacao",
+        "displayName": "cronobi_relatorio_reavaliacao",
+        "guid": "cronobirelatorioreavaliacao10B82EFCC8014A87942F0E51CA936A9D",
         "visualClassName": "Visual",
-        "version": "1.8.0.1",
-        "description": "visual para cronograma de sondas",
-        "supportUrl": "google.com"
+        "version": "1.0.0.3",
+        "description": "visual para avaliações de poços",
+        "supportUrl": "google.com",
+        "gitHubUrl": ""
     },
+    "apiVersion": "5.3.0",
     "author": {
         "name": "Gabriel Xavier da Silva",
         "email": "gabriel.x.silva.prestserv@petrobras.com.br"
     },
-    "apiVersion": "5.3.0",
     "assets": {
         "icon": "assets/icon.png"
     },
